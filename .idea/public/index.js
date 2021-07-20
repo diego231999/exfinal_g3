@@ -65,10 +65,10 @@ app.post('/form', function (request, response) {
         var sql = "select * from usuario where user =? and pass =?";
         conn.query(sql, params, function (error, results) {
             if (error || results == "") {
-                response.sendFile(__dirname + '/public/login.html');
+                response.sendFile(__dirname + '/login.html');
             } else {
                 booleano=true;
-                response.sendFile(__dirname + '/public/');
+                response.sendFile(__dirname + '/main.html');
             }
         });
     } else {
