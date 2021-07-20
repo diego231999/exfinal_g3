@@ -1,4 +1,4 @@
-const sha256 = require('js-sha256');
+//const sha256 = require('js-sha256');
 const bodyParser = require('body-parser');
 const express = require('express');
 const http = require('http');
@@ -30,7 +30,8 @@ var conn = mysql.createConnection({
 });
 
 var crypto;
-let booleano = false;
+var booleano = new Boolean(false);
+var usuario="";
 
 try {
     crypto = require('crypto');
@@ -62,17 +63,17 @@ app.post('/form', function (request, response) {
     console.log(sha256c);
     var params = [usuario, sha256c]
     if (usuario && contra) {
-        var sql = "select * from usuario where user =? and pass =?";
+        var sql = "select * from users where names =? and password =?";
         conn.query(sql, params, function (error, results) {
             if (error || results == "") {
-                response.sendFile(__dirname + '/public/login.html');
+                response.sendFile(__dirname + '/login.html');
             } else {
                 booleano=true;
-                response.sendFile(__dirname + '/public/');
+                response.sendFile(__dirname + '/main.html');
             }
         });
     } else {
-        response.sendFile(__dirname + '/public/login.html');
+        response.sendFile(__dirname + '/login.html');
         response.end();
     }
 });
