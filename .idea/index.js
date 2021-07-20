@@ -18,6 +18,14 @@ var conn = mysql.createConnection({
     database: "exfinal_g3",
 
 });
+
+var crypto;
+try {
+    crypto = require('crypto');
+} catch (err) {
+    console.log('¡la criptografía no es compatible!');
+}
+
 //con db
 conn.connect(function (err) {
     if (err) {
