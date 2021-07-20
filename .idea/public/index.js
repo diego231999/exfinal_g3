@@ -31,7 +31,7 @@ var conn = mysql.createConnection({
 
 var crypto;
 let booleano = false;
-
+let users_connected = [];
 try {
     crypto = require('crypto');
 } catch (err) {
@@ -52,7 +52,7 @@ app.get('/login', function (req, res) {
 });
 
 app.post('/form', function (request, response) {
-    usuario = request.body.user;
+    var usuario = request.body.user;
     console.log(usuario);
     var contra = request.body.pass;
     console.log(contra);
@@ -62,17 +62,21 @@ app.post('/form', function (request, response) {
     console.log(sha256c);
     var params = [usuario, sha256c]
     if (usuario && contra) {
-        var sql = "select * from usuario where user =? and pass =?";
+        var sql = "select * from users where names =? and password =?";
         conn.query(sql, params, function (error, results) {
             if (error || results == "") {
+                console.log(results)
                 response.sendFile(__dirname + '/login.html');
             } else {
                 booleano=true;
+                users_connected.push([params]);
+                console.log("USUARIOS VALIDOS");
                 response.sendFile(__dirname + '/main.html');
             }
         });
     } else {
-        response.sendFile(__dirname + '/public/login.html');
+        console.log("USUARIOS INVALIDOS 2");
+        response.sendFile(__dirname + '/login.html');
         response.end();
     }
 });
@@ -80,6 +84,7 @@ app.post('/form', function (request, response) {
 server.listen(3000, function () {
     console.log("Servidor corriendo en el puerto 3000");
 });
+
 if (booleano){
     io.on('connection', function (socket) {
         console.log("usuario conectado");
@@ -90,5 +95,5 @@ if (booleano){
         });
         //socket.close();
     });
-    booleano=false;
+    booleano = false;
 }
