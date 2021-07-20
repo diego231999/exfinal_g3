@@ -10,6 +10,14 @@ const io = socketIO(server);
 
 const mysql = require('mysql2');
 
+/* USUARIOS - PASSWORDS
+Joham - joham123
+Diego - diego123
+User1 - user1123
+User2 - user2123
+User3 - user3123
+*/
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 var conn = mysql.createConnection({
@@ -22,6 +30,8 @@ var conn = mysql.createConnection({
 });
 
 var crypto;
+let booleano = false;
+
 try {
     crypto = require('crypto');
 } catch (err) {
@@ -45,7 +55,6 @@ app.post('/form', function (request, response) {
     usuario = request.body.user;
     console.log(usuario);
     var contra = request.body.pass;
-
     console.log(contra);
     var hash_sha256 = crypto.createHash("sha256");
     hash_sha256.update(contra);
@@ -79,6 +88,7 @@ if (booleano){
             console.log("mensaje del cliente " + usuario + ": " + mensaje);
             io.emit("mensaje broadcast", usuario + ": " + mensaje);
         });
+        //socket.close();
     });
     booleano=false;
 }
