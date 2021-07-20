@@ -59,10 +59,26 @@
     <script>
         $(document).ready(function () {
             let socket=io();
-            socket.on("usuarioIngresado", function (user){
-                console.log(user);
-                $("#usuario").append("<li>" + user + "</li>");
+            let usuarios = [];
+            let usuarios_conectados = [];
+
+            socket.emit("usuario conectado", true);
+
+            socket.on("usuarios", function (users){
+                console.log(users);
+                $.each(users, function (i, user) {
+                    $("#usuarios").append("<li>" + user + "</li>");
+                });
+                usuarios = users;
             });
+            socket.on("usuarioIngresado", function (users_connect){
+                $.each(users_connect, function (i, user_c) {
+                    $("#usuarios_conectados").append("<li>" + user_c + "</li>");
+                });
+                usuarios_conectados = users_connect;
+            });
+            /*console.log(usuarios);
+            console.log(usuarios_conectados);*/
 
             $("form").submit(function () {
                 let textoEnviar = $("#mensaje").val();
@@ -79,8 +95,10 @@
     </script>
 </head>
 <body>
-<h4> Hola Mundo</h4>
-<ul id="usuario"></ul>
+<span>Usuarios</span>
+<ul id="usuarios"></ul>
+<span>Usuarios conectados</span>
+<ul id="usuarios_conectados"></ul>
 
 <ul id="messages"></ul>
 

@@ -9,20 +9,6 @@
     <script crossorigin="anonymous"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
             src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $("form").submit(function () {
-                let socket = io();
-                let user = $("#user").val();
-                console.log(user);
-                socket.emit("user", user);
-            });
-        });
-
-    </script>
-    <script>
-
-    </script>
 
 </head>
 <body>
@@ -37,16 +23,16 @@
                 </div>
                 <form id="login" name="form" action="/form" method="post">
 
-                    <div class="form-group">
+                    <div class="form-group mt-3">
                         <label for="user" class="text-warning">Username:</label><br>
                         <input type="text" name="user" id="user" class="form-control">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mt-3">
                         <label for="pass" class="text-warning">Password:</label><br>
                         <input type="text" name="pass" id="pass" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <button type="submit" id="setName" class="btn btn-success" value="submit" onclick="enviarForm()">Enviar</button>
+                    <div class="form-group mt-3">
+                        <button type="submit" id="setName" class="btn btn-success" value="submit">Enviar</button>
                     </div>
                 </form>
             </div>

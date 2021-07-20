@@ -30,8 +30,11 @@ var conn = mysql.createConnection({
 });
 
 var crypto;
-var booleano = new Boolean(false);
+// var booleano = new Boolean(false);
 var usuario="";
+var sockets = [];
+var usuarios_conectados = [];
+var usuarios = [];
 
 try {
     crypto = require('crypto');
@@ -48,6 +51,18 @@ conn.connect(function (err) {
     }
 
 })
+
+let sql = "select * from users ";
+conn.query(sql, function (err, res){
+    if (err) throw  err;
+    for (var j = 0; j < res.length; j++) {
+        u = [
+            res[j]["names"]
+        ];
+        usuarios.push(u);
+    }
+});
+
 app.get('/login', function (req, res) {
     res.sendFile(__dirname + '/login.html');
 });
@@ -68,7 +83,7 @@ app.post('/form', function (request, response) {
             if (error || results == "") {
                 response.sendFile(__dirname + '/login.html');
             } else {
-                booleano=true;
+                usuarios_conectados.push(params[0]);
                 response.sendFile(__dirname + '/main.html');
             }
         });
@@ -81,15 +96,25 @@ app.post('/form', function (request, response) {
 server.listen(3000, function () {
     console.log("Servidor corriendo en el puerto 3000");
 });
-if (booleano){
-    io.on('connection', function (socket) {
+
+io.on('connection', function (socket) {
+
+    socket.on("usuario conectado", function (bool){
+        console.log(bool)
         console.log("usuario conectado");
-        io.emit("usuarioIngresado", usuario);
-        socket.on("mensaje de chat", function (mensaje) {
-            console.log("mensaje del cliente " + usuario + ": " + mensaje);
-            io.emit("mensaje broadcast", usuario + ": " + mensaje);
-        });
-        //socket.close();
+        console.log("Se conectó: " + usuarios_conectados[usuarios_conectados.length - 1]);
+
+        console.log(usuarios);
+        console.log(usuarios_conectados);
     });
-    booleano=false;
-}
+
+    // enviando la lista de usuarios conectados
+    socket.emit("usuarioIngresado", usuarios_conectados);
+    socket.emit("usuarios", usuarios);
+
+    socket.on("mensaje de chat", function (mensaje) {
+        console.log("mensaje del cliente " + usuario + ": " + mensaje);
+        io.emit("mensaje broadcast", usuario + ": " + mensaje);
+    });
+    //socket.close();
+});
