@@ -3,9 +3,11 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
+
 var app = express();
 var server = http.Server(app);
 const io = socketIO(server);
+
 const mysql = require('mysql2');
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -36,7 +38,7 @@ conn.connect(function (err) {
 
 })
 app.get('/login', function (req, res) {
-    res.sendFile(__dirname + '/public/login.html');
+    res.sendFile(__dirname + '/login.html');
 });
 
 app.post('/form', function (request, response) {
@@ -68,7 +70,6 @@ app.post('/form', function (request, response) {
 
 server.listen(3000, function () {
     console.log("Servidor corriendo en el puerto 3000");
-
 });
 if (booleano){
     io.on('connection', function (socket) {
@@ -81,4 +82,3 @@ if (booleano){
     });
     booleano=false;
 }
-
