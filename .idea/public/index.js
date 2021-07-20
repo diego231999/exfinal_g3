@@ -33,6 +33,21 @@ app.get('/login', function (req, res) {
 
 server.listen(3000, function () {
     console.log("Servidor corriendo en el puerto 3000");
-
 });
 
+function logIn(){
+    let user = $("#user").val();
+    let pass = $("#pass").val();
+    console.log(user);
+    console.log(pass);
+
+    let query = "select * from users where names = ? and password = ? ";
+    let params = [user, pass];
+    conn.query(query, params, function (err, result) {
+        if (err) throw err;
+        // todo validar con sha256
+        let login = json(result);
+        console.log(login)
+        return login;
+    });
+}
