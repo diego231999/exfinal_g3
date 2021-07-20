@@ -8,5 +8,11 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "express": "^4.17.1",
+    "mysql2": "^2.2.5",
+    "socket.io": "^4.1.3"
+  }
 }
